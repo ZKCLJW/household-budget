@@ -107,6 +107,8 @@ form.add input, form.add select {
 }
 form.add input[name="name"] { flex: 2 1 200px; }
 form.add input[name="amt"] { flex: 0 1 110px; }
+form.add label.check { display: flex; align-items: center; gap: 7px; font-size: 15.5px; padding: 0 4px; }
+form.add label.check input { width: 19px; height: 19px; accent-color: var(--green); }
 form.add button {
   font: inherit; font-size: 16px; padding: 8px 18px; border-radius: 6px; cursor: pointer;
   border: 0; background: var(--green); color: #fff; font-weight: bold;

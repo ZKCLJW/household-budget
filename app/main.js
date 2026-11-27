@@ -1,13 +1,16 @@
 // Hearth & Ledger - state, routing and wiring. Session state only: the selected month, any
-// expenses the visitor adds, which bills they have ticked off, and the goal sliders. Every
-// view re-renders from that one state, so an edit anywhere shows up everywhere.
+// expenses and bills the visitor adds, which bills they have ticked off, the goal sliders,
+// and the what-if trims. Every view re-renders from that one state, so an edit anywhere
+// shows up everywhere.
 'use strict';
 
 const state = {
   month: '2026-11',
   added: {}, // monthId -> [expenses added this session]
+  addedBills: [], // regular bills added this session
   paid: {}, // bill name -> true
   goalExtra: [0, 0, 0],
+  whatif: {}, // category id -> percent trim on the Insights what-if bench
 };
 
 const app = document.getElementById('app');
@@ -16,6 +19,7 @@ const routes = {
   '/budget': { view: 'budget', nav: 'budget' },
   '/bills': { view: 'bills', nav: 'bills' },
   '/goals': { view: 'goals', nav: 'goals' },
+  '/year': { view: 'year', nav: 'year' },
   '/insights': { view: 'insights', nav: 'insights' },
 };
 
@@ -49,6 +53,30 @@ function wireBills() {
       state.paid[name] = !state.paid[name];
       render();
     }));
+  const form = document.getElementById('bill-form');
+  if (!form) return;
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const fd = new FormData(form);
+    const name = String(fd.get('name') || '').trim();
+    const amt = Number(fd.get('amt'));
+    const due = Math.min(30, Math.max(1, Number(fd.get('due')) || 1));
+    if (!name || !(amt > 0)) return;
+    state.addedBills.push({ name, amt, due, autopay: fd.get('autopay') === 'on' });
+    render();
+    const note = document.getElementById('bill-note');
+    if (note) note.textContent = `Added "${name}" — ${'$' + amt.toLocaleString('en-US')} due on the ${due}th${fd.get('autopay') === 'on' ? ', on autopay' : ''}. The table and the totals above now include it.`;
+  });
+}
+
+function wireInsights() {
+  document.querySelectorAll('input[data-whatif]').forEach((r) =>
+    r.addEventListener('input', () => {
+      state.whatif[r.dataset.whatif] = Number(r.value);
+      render();
+      const el = document.querySelector(`input[data-whatif="${r.dataset.whatif}"]`);
+      if (el) el.focus();
+    }));
 }
 
 function wireGoals() {
@@ -71,6 +99,7 @@ function render() {
   if (route.view === 'budget') wireBudget();
   if (route.view === 'bills') wireBills();
   if (route.view === 'goals') wireGoals();
+  if (route.view === 'insights') wireInsights();
   window.scrollTo(0, 0);
 }
 

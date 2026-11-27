@@ -1,7 +1,7 @@
 // Hearth & Ledger - the sample household's books. A two-income household (Alex and Sam, one
 // child) keeping a monthly budget in US dollars. The figures are the app's worked example:
 // every total on every page is computed from these entries, so the books always balance.
-// September and October are closed months; November runs to the 27th, today.
+// July through October are closed months; November runs to the 27th, today.
 'use strict';
 
 const LEDGER = {
@@ -26,6 +26,62 @@ const LEDGER = {
   ],
   // expenses[month] = list of {d: day, name, cat, amt}
   expenses: {
+    '2026-07': [
+      { d: 1, name: 'Rent', cat: 'housing', amt: 1850 },
+      { d: 2, name: 'HEB groceries', cat: 'groceries', amt: 162 },
+      { d: 3, name: 'July 4th cookout — brisket & fixings', cat: 'groceries', amt: 88 },
+      { d: 5, name: 'Car insurance (monthly)', cat: 'transport', amt: 142 },
+      { d: 6, name: 'Electricity — Austin Energy', cat: 'utilities', amt: 168 },
+      { d: 7, name: 'Swim lessons for Mia', cat: 'kids', amt: 85 },
+      { d: 9, name: 'Internet — fiber', cat: 'utilities', amt: 70 },
+      { d: 10, name: 'Fuel', cat: 'transport', amt: 57 },
+      { d: 11, name: 'Ice cream & pool day', cat: 'fun', amt: 26 },
+      { d: 12, name: 'Trader Joe\'s', cat: 'groceries', amt: 94 },
+      { d: 13, name: 'Pharmacy', cat: 'health', amt: 29 },
+      { d: 14, name: 'Water & waste', cat: 'utilities', amt: 56 },
+      { d: 15, name: 'HEB groceries', cat: 'groceries', amt: 171 },
+      { d: 16, name: 'Sunscreen & pool gear', cat: 'household', amt: 44 },
+      { d: 18, name: 'Phones (two lines)', cat: 'utilities', amt: 88 },
+      { d: 19, name: 'Streaming bundle', cat: 'subs', amt: 38 },
+      { d: 20, name: 'Fuel', cat: 'transport', amt: 51 },
+      { d: 21, name: 'Tacos — food truck', cat: 'dining', amt: 31 },
+      { d: 22, name: 'Costco run', cat: 'groceries', amt: 183 },
+      { d: 24, name: 'Burgers out', cat: 'dining', amt: 44 },
+      { d: 25, name: 'Gym (two memberships)', cat: 'health', amt: 58 },
+      { d: 26, name: 'Music & apps', cat: 'subs', amt: 30 },
+      { d: 27, name: 'Library book sale', cat: 'fun', amt: 18 },
+      { d: 28, name: 'HEB groceries', cat: 'groceries', amt: 126 },
+      { d: 29, name: 'Birthday gift', cat: 'fun', amt: 40 },
+      { d: 30, name: 'Food bank donation', cat: 'giving', amt: 50 },
+    ],
+    '2026-08': [
+      { d: 1, name: 'Rent', cat: 'housing', amt: 1850 },
+      { d: 3, name: 'HEB groceries', cat: 'groceries', amt: 158 },
+      { d: 4, name: 'School supplies — backpack & kit', cat: 'kids', amt: 97 },
+      { d: 5, name: 'Car insurance (monthly)', cat: 'transport', amt: 142 },
+      { d: 6, name: 'Electricity — Austin Energy', cat: 'utilities', amt: 176 },
+      { d: 8, name: 'Trader Joe\'s', cat: 'groceries', amt: 92 },
+      { d: 9, name: 'Internet — fiber', cat: 'utilities', amt: 70 },
+      { d: 10, name: 'Fuel', cat: 'transport', amt: 54 },
+      { d: 12, name: 'School shoes for Mia', cat: 'kids', amt: 56 },
+      { d: 13, name: 'Pharmacy', cat: 'health', amt: 33 },
+      { d: 14, name: 'Water & waste', cat: 'utilities', amt: 55 },
+      { d: 15, name: 'HEB groceries', cat: 'groceries', amt: 166 },
+      { d: 16, name: 'Pizza night', cat: 'dining', amt: 43 },
+      { d: 18, name: 'Phones (two lines)', cat: 'utilities', amt: 88 },
+      { d: 19, name: 'Streaming bundle', cat: 'subs', amt: 38 },
+      { d: 20, name: 'Fuel', cat: 'transport', amt: 49 },
+      { d: 21, name: 'Haircuts before school', cat: 'household', amt: 38 },
+      { d: 22, name: 'Costco run', cat: 'groceries', amt: 191 },
+      { d: 23, name: 'End-of-summer picnic', cat: 'fun', amt: 37 },
+      { d: 24, name: 'Dentist check-up', cat: 'health', amt: 72 },
+      { d: 25, name: 'Gym (two memberships)', cat: 'health', amt: 58 },
+      { d: 26, name: 'Music & apps', cat: 'subs', amt: 30 },
+      { d: 27, name: 'Cinema + popcorn', cat: 'fun', amt: 39 },
+      { d: 28, name: 'HEB groceries', cat: 'groceries', amt: 119 },
+      { d: 29, name: 'School fundraiser', cat: 'giving', amt: 45 },
+      { d: 30, name: 'Cleaning supplies', cat: 'household', amt: 36 },
+    ],
     '2026-09': [
       { d: 1, name: 'Rent', cat: 'housing', amt: 1850 },
       { d: 2, name: 'HEB groceries', cat: 'groceries', amt: 168 },
@@ -124,6 +180,8 @@ const LEDGER = {
     { name: 'Car replacement fund', target: 8000, saved: 2600, monthly: 250, note: 'The current car is at 148,000 miles; this is the deposit on its successor.' },
   ],
   months: [
+    { id: '2026-07', label: 'July 2026', closed: true },
+    { id: '2026-08', label: 'August 2026', closed: true },
     { id: '2026-09', label: 'September 2026', closed: true },
     { id: '2026-10', label: 'October 2026', closed: true },
     { id: '2026-11', label: 'November 2026', closed: false, today: 27, days: 30 },

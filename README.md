@@ -8,26 +8,31 @@ An entry for the make.fun bounty [Make the best household budget site](https://m
 
 A household budget site built around one worked example — Alex &amp; Sam, one child, renting in
 Austin, $6,940 a month take-home — where **every number is computed from the same entries, so
-the books always balance**. Five linked pages:
+the books always balance**. Six linked pages:
 
 - **This month** — income, spent, left and savings rate for the month, the biggest envelopes,
   the latest entries and what still has to leave the account. A switcher walks back through
-  September and October's closed books.
+  the closed books to July.
 - **Envelopes** — eleven spending envelopes with bars that run green, amber, then red, and a
   plain-words note under each ("$X left — about $Y a day to the 30th"). The add-an-expense form
   really adds: every total in the book moves.
-- **Bills** — the nine regular bills on their November dates, autopay marked, each with a
-  working "mark paid" tick that updates the month's position.
+- **Bills** — the regular bills on their November dates, autopay marked, each with a working
+  "mark paid" tick that updates the month's position — and an add-a-bill form that joins a new
+  regular bill to the table and the totals.
 - **Goals** — an emergency fund, a holiday trip and a car fund, each with its finish line; a
   slider per goal adds extra per month and the finish line moves, live.
-- **Insights** — income against spending across the three months, a category donut, and an
-  honest 50/30/20 check with the verdict written out.
+- **The year** — all five months summed: total kept, the average savings rate, a cumulative
+  savings line that climbs month by month, and a month-by-month table with each month's
+  biggest envelope, best month and tightest month called out.
+- **Insights** — income against spending across the five months, a category donut, an honest
+  50/30/20 check with the verdict written out, and a what-if bench: trim the "want" envelopes
+  with sliders and watch the freed money move the savings rate and every goal's finish line.
 
 ## Layout
 
 - `app/index.html` — the page shell and navigation
-- `app/data.js` — the household's books: incomes, envelopes, three months of entries, bills, goals
-- `app/views.js` — the five views, the charts, and every computation
+- `app/data.js` — the household's books: incomes, envelopes, five months of entries, bills, goals
+- `app/views.js` — the six views, the charts, and every computation
 - `app/main.js` — session state, the hash router, and the wiring for every control
 - `app/style.css` — the warm ledger styling
 - `main.ts` — the handover program: copies `app/` and `screenshots/` to the output and writes
