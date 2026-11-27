@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hearth &amp; Ledger — the household budget book</title>
+<meta name="description" content="A household budget that balances: monthly envelopes, bills on their due dates, savings goals with a finish line, and an honest 50/30/20 check.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#/">
+    <span class="brand-mark" aria-hidden="true">H&amp;L</span>
+    <span class="brand-text">Hearth <em>&amp; Ledger</em></span>
+  </a>
+  <nav class="mainnav" aria-label="Sections">
+    <a href="#/" data-nav="home">This month</a>
+    <a href="#/budget" data-nav="budget">Envelopes</a>
+    <a href="#/bills" data-nav="bills">Bills</a>
+    <a href="#/goals" data-nav="goals">Goals</a>
+    <a href="#/insights" data-nav="insights">Insights</a>
+  </nav>
+</header>
+
+<main id="app" tabindex="-1"></main>
+
+<footer class="sitefoot">
+  <p><strong>Hearth &amp; Ledger</strong> — a worked example budget for one household (Alex &amp; Sam, one child, renting in Austin). Every total is computed from the entries themselves, so the books always balance; add an expense on the Envelopes page and watch them move.</p>
+  <p class="footnav">
+    <a href="#/">This month</a> · <a href="#/budget">Envelopes</a> · <a href="#/bills">Bills</a> · <a href="#/goals">Goals</a> · <a href="#/insights">Insights</a>
+  </p>
+</footer>
+
+<script src="data.js"></script>
+<script src="views.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
