@@ -5,6 +5,9 @@
 
 // ---------- money + computation ----------
 const $ = (n) => '$' + Math.round(n).toLocaleString('en-US');
+const ord = (n) => n + (n % 10 === 1 && n !== 11 ? 'st' : n % 10 === 2 && n !== 12 ? 'nd' : n % 10 === 3 && n !== 13 ? 'rd' : 'th');
+const nWord = (n) => ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight'][n] || String(n);
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const catById = (id) => LEDGER.categories.find((c) => c.id === id);
 const incomeTotal = () => LEDGER.incomes.reduce((a, i) => a + i.monthly, 0);
 
@@ -24,13 +27,13 @@ function spentTotal(state, monthId) {
 function monthMeta(monthId) { return LEDGER.months.find((m) => m.id === monthId); }
 // The bill schedule is the ledger's nine regulars plus any the visitor adds this session.
 function allBills(state) { return [...LEDGER.bills, ...(state.addedBills || [])]; }
-// A goal's finish line, counted from November 2026 — the same maths the Goals page uses.
+// A goal's finish line, counted from December 2026 — the same maths the Goals page uses.
 function goalMonths(goal, monthly) {
   return Math.max(0, Math.ceil((goal.target - goal.saved) / monthly));
 }
 function goalEta(months) {
   if (months === 0) return 'funded';
-  return new Date(2026, 10 + months, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return new Date(2026, 11 + months, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 }
 
 // ---------- shared pieces ----------
@@ -59,7 +62,7 @@ function envelope(cat, spent, state, monthId) {
     cls = 'hot';
     hint = `<span class="hint">Running hot: ${$((left / (meta.days - meta.today + 1))).replace('.00', '')} a day left for the rest of the month.</span>`;
   } else if (!meta.closed) {
-    hint = `<span class="hint">${$(left)} left — about ${$(left / Math.max(1, meta.days - meta.today + 1))} a day to the 30th.</span>`;
+    hint = `<span class="hint">${$(left)} left — about ${$(left / Math.max(1, meta.days - meta.today + 1))} a day to the ${ord(meta.days)}.</span>`;
   } else {
     hint = `<span class="hint">${$(left)} left over at month's end.</span>`;
   }
@@ -277,7 +280,7 @@ const Views = {
   },
 
   bills(state) {
-    const meta = monthMeta('2026-11');
+    const meta = monthMeta('2026-12');
     const bills = allBills(state);
     const rows = [...bills].sort((a, b) => a.due - b.due).map((b) => {
       const paid = state.paid[b.name];
@@ -287,7 +290,7 @@ const Views = {
       else if (b.due - meta.today <= 3) status = `<span class="pill due">Due in ${b.due - meta.today} day${b.due - meta.today === 1 ? '' : 's'}</span>`;
       else status = `<span class="pill">Due in ${b.due - meta.today} days</span>`;
       return `<tr class="${paid ? 'paid' : ''}"><td>${b.name}</td><td class="num">${$(b.amt)}</td>
-        <td>Nov ${b.due}</td><td>${b.autopay ? 'Autopay' : 'Manual — by hand'}</td><td>${status}</td>
+        <td>Dec ${b.due}</td><td>${b.autopay ? 'Autopay' : 'Manual — by hand'}</td><td>${status}</td>
         <td><button type="button" class="paybtn ${paid ? 'done' : ''}" data-pay="${b.name}">${paid ? 'Paid ✓' : 'Mark paid'}</button></td></tr>`;
     }).join('');
     const total = bills.reduce((a, b) => a + b.amt, 0);
@@ -299,20 +302,20 @@ const Views = {
       : `${manual.length} are paid by hand`;
     return `
     <div class="hero"><h1>Bills: <span class="accent">nothing arrives as a surprise</span></h1>
-    <p class="lede">The ${bills.length} regular bills, on their November dates. ${autoCount} run on autopay; the
+    <p class="lede">The ${bills.length} regular bills, on their December dates. ${autoCount} run on autopay; the
     rent is paid by hand on the 1st, deliberately — it is the one number worth looking at every
     month. Marking a bill paid updates the month's position below, and a new regular bill can
     be added at the foot of the page.</p></div>
     <div class="stat-grid">
       <div class="stat"><div class="v">${$(total)}</div><div class="l">Bills every month</div><div class="s">across ${bills.length} bills</div></div>
       <div class="stat"><div class="v">${$(paidTotal)}</div><div class="l">Marked paid</div><div class="s">in this session's book</div></div>
-      <div class="stat"><div class="v">${$(total - paidTotal)}</div><div class="l">Still to go out</div><div class="s">before Nov 30</div></div>
+      <div class="stat"><div class="v">${$(total - paidTotal)}</div><div class="l">Still to go out</div><div class="s">before Dec 31</div></div>
       <div class="stat"><div class="v">${autoCount} of ${bills.length}</div><div class="l">On autopay</div><div class="s">${manualNote}</div></div>
     </div>
     <section class="block">
       <table class="bills"><thead><tr><th>Bill</th><th class="num">Amount</th><th>Due</th><th>How it pays</th><th>Status</th><th></th></tr></thead>
       <tbody>${rows}</tbody></table>
-      <p class="note">Due dates are November 2026's. A bill marked "was due" here is one whose
+      <p class="note">Due dates are December 2026's. A bill marked "was due" here is one whose
       date has passed without a paid mark in this session — in the family's real book it left on
       autopay; the button is how the paper copy gets ticked off.</p>
       <div class="panel">
@@ -320,7 +323,7 @@ const Views = {
         <form class="add" id="bill-form">
           <input name="name" required maxlength="48" placeholder="Bill name, e.g. Piano lessons">
           <input name="amt" required type="number" min="1" max="100000" step="0.01" placeholder="$">
-          <input name="due" type="number" min="1" max="30" value="15" aria-label="Due day of month">
+          <input name="due" type="number" min="1" max="31" value="15" aria-label="Due day of month">
           <label class="check"><input type="checkbox" name="autopay"> Autopay</label>
           <button type="submit">Add it</button>
         </form>
@@ -337,7 +340,7 @@ const Views = {
       const monthly = g.monthly + extra;
       const months = Math.max(0, Math.ceil((g.target - g.saved) / monthly));
       const pct = Math.round((g.saved / g.target) * 100);
-      const eta = new Date(2026, 10 + months, 1);
+      const eta = new Date(2026, 11 + months, 1);
       const etaLabel = months === 0 ? 'funded' : eta.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
       return `<div class="panel goal">
         <h3>${g.name}</h3>
@@ -376,20 +379,24 @@ const Views = {
     const tight = [...closed].sort((a, b) => a.rate - b.rate)[0];
     const ef = LEDGER.goals[0];
     const efLeft = ef.target - ef.saved;
+    const nMonths = nWord(rows.length);
+    const openRow = rows.find((r) => !r.m.closed);
+    const openName = openRow.m.label.split(' ')[0];
+    const stillToLeave = LEDGER.bills.filter((b) => b.due > openRow.m.today).reduce((a, b) => a + b.amt, 0);
     const tableRows = rows.map((r) => `<tr>
       <td>${r.m.label}${r.m.closed ? '' : ' <span class="pill due">open</span>'}</td>
       <td class="num">${$(inc)}</td><td class="num">${$(r.spent)}</td>
       <td class="num"><strong>${$(r.kept)}</strong></td><td class="num">${r.rate}%</td>
       <td>${r.top.name} — ${$(r.topAmt)}</td></tr>`).join('');
     return `
-    <div class="hero"><h1>The year so far: <span class="accent">five months, one story</span></h1>
-    <p class="lede">July to November in one look — what came in, what went out, and what the
+    <div class="hero"><h1>The year so far: <span class="accent">${nMonths} months, one story</span></h1>
+    <p class="lede">${rows[0].m.label.split(' ')[0]} to ${openName} in one look — what came in, what went out, and what the
     household kept, month by month. Every figure is summed from the same entries the other
     pages use, so this page cannot disagree with them.</p></div>
     <div class="stat-grid">
-      <div class="stat"><div class="v">${$(totInc)}</div><div class="l">Income, five months</div><div class="s">${$(inc)} a month, two salaries</div></div>
-      <div class="stat"><div class="v">${$(totSpent)}</div><div class="l">Spent, five months</div><div class="s">${rows.reduce((a, r) => a + monthExpenses(state, r.m.id).length, 0)} entries in the book</div></div>
-      <div class="stat"><div class="v">${$(totKept)}</div><div class="l">Kept, five months</div><div class="s">before November has even closed</div></div>
+      <div class="stat"><div class="v">${$(totInc)}</div><div class="l">Income, ${nMonths} months</div><div class="s">${$(inc)} a month, two salaries</div></div>
+      <div class="stat"><div class="v">${$(totSpent)}</div><div class="l">Spent, ${nMonths} months</div><div class="s">${rows.reduce((a, r) => a + monthExpenses(state, r.m.id).length, 0)} entries in the book</div></div>
+      <div class="stat"><div class="v">${$(totKept)}</div><div class="l">Kept, ${nMonths} months</div><div class="s">before ${openName} has even closed</div></div>
       <div class="stat"><div class="v">${avgRate}%</div><div class="l">Average savings rate</div><div class="s">${avgRate >= 20 ? 'the goal is 20% — this book runs ahead of it' : 'against a goal of 20%'}</div></div>
     </div>
     <section class="block">
@@ -398,19 +405,20 @@ const Views = {
       <p class="note">${rows.every((r) => r.kept >= 0)
         ? 'The line only ever climbs: no month in this book spent more than came in.'
         : 'A month that spends more than comes in pulls the line down — the book shows it rather than hiding it.'}
-      November's point is counted to the 27th and will edge a little higher by the 30th.</p></div>
+      ${openName}'s point is counted to the ${ord(openRow.m.today)}, with ${$(stillToLeave)} of regular bills
+      still to leave before the ${ord(openRow.m.days)} — it will settle a little lower than it stands today.</p></div>
     </section>
     <section class="block">
       <h2>Month by month</h2>
       <table class="bills"><thead><tr><th>Month</th><th class="num">Income</th><th class="num">Spent</th><th class="num">Kept</th><th class="num">Saved</th><th>Biggest envelope</th></tr></thead>
       <tbody>${tableRows}</tbody>
-      <tfoot><tr><td><strong>Five months</strong></td><td class="num"><strong>${$(totInc)}</strong></td>
+      <tfoot><tr><td><strong>${cap(nMonths)} months</strong></td><td class="num"><strong>${$(totInc)}</strong></td>
       <td class="num"><strong>${$(totSpent)}</strong></td><td class="num"><strong>${$(totKept)}</strong></td>
       <td class="num"><strong>${avgRate}%</strong></td><td></td></tr></tfoot></table>
       <div class="panel">
         <p class="verdict">Best closed month: <b>${best.m.label.split(' ')[0]}</b>, which kept ${$(best.kept)}
         (${best.rate}% of income). Tightest: <b>${tight.m.label.split(' ')[0]}</b>, at ${$(tight.kept)} (${tight.rate}%)${tight.rate >= 40
-          ? ' — and even the tightest month kept more than two-fifths of what came in' : ''}. Across the five months the
+          ? ' — and even the tightest month kept more than two-fifths of what came in' : ''}. Across the ${nMonths} months the
         household kept <b>${$(totKept)}</b>; the ${ef.name.toLowerCase()} alone still wants ${$(efLeft)} of its
         ${$(ef.target)} target, which is where the Goals page points it.</p>
       </div>
@@ -432,14 +440,14 @@ const Views = {
     };
     return `
     <div class="hero"><h1>Insights: <span class="accent">the honest mirror</span></h1>
-    <p class="lede">Five months side by side, where the money actually went, the 50/30/20
+    <p class="lede">${cap(nWord(LEDGER.months.length))} months side by side, where the money actually went, the 50/30/20
     check — needs near half of income, wants near a third, savings at a fifth — and a what-if
     bench for rehearsing a leaner month.</p></div>
     ${monthBar(state)}
     <section class="block">
       <h2>Income against spending</h2>
       <div class="panel">${trendChart(state)}
-      <p class="note">November is counted to the 27th; its bar will grow a little before the
+      <p class="note">${LEDGER.months.find((m) => !m.closed).label.split(' ')[0]} is counted to the ${ord(LEDGER.months.find((m) => !m.closed).today)}; its bar will grow a little before the
       month closes. The closed months kept ${LEDGER.months.filter((m) => m.closed).map((m) => `${m.label.split(' ')[0]} ${$(inc - spentTotal(state, m.id))}`).join(', ')}.</p></div>
     </section>
     <section class="block">

@@ -5,7 +5,7 @@
 'use strict';
 
 const state = {
-  month: '2026-11',
+  month: '2026-12',
   added: {}, // monthId -> [expenses added this session]
   addedBills: [], // regular bills added this session
   paid: {}, // bill name -> true
@@ -37,7 +37,8 @@ function wireBudget() {
     const name = String(fd.get('name') || '').trim();
     const amt = Number(fd.get('amt'));
     const cat = String(fd.get('cat'));
-    const day = Math.min(30, Math.max(1, Number(fd.get('day')) || 1));
+    const maxDay = (monthMeta(state.month) || {}).days || 31;
+    const day = Math.min(maxDay, Math.max(1, Number(fd.get('day')) || 1));
     if (!name || !(amt > 0)) return;
     (state.added[state.month] = state.added[state.month] || []).push({ d: day, name, cat, amt });
     render();
@@ -60,7 +61,7 @@ function wireBills() {
     const fd = new FormData(form);
     const name = String(fd.get('name') || '').trim();
     const amt = Number(fd.get('amt'));
-    const due = Math.min(30, Math.max(1, Number(fd.get('due')) || 1));
+    const due = Math.min(31, Math.max(1, Number(fd.get('due')) || 1));
     if (!name || !(amt > 0)) return;
     state.addedBills.push({ name, amt, due, autopay: fd.get('autopay') === 'on' });
     render();

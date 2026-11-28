@@ -1,7 +1,7 @@
 // Hearth & Ledger - the sample household's books. A two-income household (Alex and Sam, one
 // child) keeping a monthly budget in US dollars. The figures are the app's worked example:
 // every total on every page is computed from these entries, so the books always balance.
-// July through October are closed months; November runs to the 27th, today.
+// July through November are closed months; December runs to the 20th, today.
 'use strict';
 
 const LEDGER = {
@@ -162,13 +162,37 @@ const LEDGER = {
       { d: 26, name: 'Music & apps', cat: 'subs', amt: 30 },
       { d: 27, name: 'Coffee with friends', cat: 'dining', amt: 24 },
     ],
+    '2026-12': [
+      { d: 1, name: 'Rent', cat: 'housing', amt: 1850 },
+      { d: 2, name: 'HEB groceries', cat: 'groceries', amt: 164 },
+      { d: 3, name: 'Holiday cards & stamps', cat: 'household', amt: 26 },
+      { d: 5, name: 'Car insurance (monthly)', cat: 'transport', amt: 142 },
+      { d: 6, name: 'Electricity — Austin Energy', cat: 'utilities', amt: 118 },
+      { d: 7, name: 'Christmas tree & stand', cat: 'household', amt: 74 },
+      { d: 8, name: 'Trader Joe\'s', cat: 'groceries', amt: 89 },
+      { d: 9, name: 'Internet — fiber', cat: 'utilities', amt: 70 },
+      { d: 10, name: 'Fuel', cat: 'transport', amt: 56 },
+      { d: 11, name: 'Pharmacy', cat: 'health', amt: 37 },
+      { d: 12, name: 'Holiday gifts — nieces & nephew', cat: 'fun', amt: 118 },
+      { d: 13, name: 'HEB groceries', cat: 'groceries', amt: 172 },
+      { d: 14, name: 'Water & waste', cat: 'utilities', amt: 54 },
+      { d: 15, name: 'Winter recital — Mia', cat: 'kids', amt: 45 },
+      { d: 16, name: 'Baking supplies — cookie swap', cat: 'groceries', amt: 38 },
+      { d: 17, name: 'Fuel', cat: 'transport', amt: 48 },
+      { d: 18, name: 'Phones (two lines)', cat: 'utilities', amt: 88 },
+      { d: 18, name: 'Toy drive donation', cat: 'giving', amt: 40 },
+      { d: 19, name: 'Streaming bundle', cat: 'subs', amt: 38 },
+      { d: 19, name: 'Tamales night out', cat: 'dining', amt: 54 },
+      { d: 20, name: 'Costco run', cat: 'groceries', amt: 197 },
+      { d: 20, name: 'Coffee with friends', cat: 'dining', amt: 22 },
+    ],
   },
   bills: [
     { name: 'Rent', amt: 1850, due: 1, autopay: false },
     { name: 'Car insurance', amt: 142, due: 5, autopay: true },
-    { name: 'Electricity — Austin Energy', amt: 96, due: 6, autopay: true },
+    { name: 'Electricity — Austin Energy', amt: 118, due: 6, autopay: true },
     { name: 'Internet — fiber', amt: 70, due: 9, autopay: true },
-    { name: 'Water & waste', amt: 51, due: 14, autopay: true },
+    { name: 'Water & waste', amt: 54, due: 14, autopay: true },
     { name: 'Phones (two lines)', amt: 88, due: 18, autopay: true },
     { name: 'Streaming bundle', amt: 38, due: 19, autopay: true },
     { name: 'Music & apps', amt: 30, due: 26, autopay: true },
@@ -184,6 +208,7 @@ const LEDGER = {
     { id: '2026-08', label: 'August 2026', closed: true },
     { id: '2026-09', label: 'September 2026', closed: true },
     { id: '2026-10', label: 'October 2026', closed: true },
-    { id: '2026-11', label: 'November 2026', closed: false, today: 27, days: 30 },
+    { id: '2026-11', label: 'November 2026', closed: true },
+    { id: '2026-12', label: 'December 2026', closed: false, today: 20, days: 31 },
   ],
 };

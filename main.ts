@@ -3,10 +3,10 @@
 //
 // The site lives in app/ as plain static files (app/index.html and its classic scripts and
 // stylesheet, no library, no network request): a household budget book for one worked-example
-// family — a month view with a five-month switcher, eleven spending envelopes with pace notes
+// family — a month view with a six-month switcher, eleven spending envelopes with pace notes
 // and a working add-an-expense form, a bills page with due dates, paid tick-offs and an
 // add-a-bill form, savings goals whose finish lines move with a slider, a year view that sums
-// all five months into a cumulative savings line and a month-by-month table, and an insights
+// all six months into a cumulative savings line and a month-by-month table, and an insights
 // page with the spending donut, an honest 50/30/20 check and a what-if bench that rehearses
 // trimming the "want" envelopes. Every total is computed from the same entries, so the books balance.
 // This program hands it in: it copies app/ and screenshots/ into the output directory, verifies
